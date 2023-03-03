@@ -1,5 +1,8 @@
 package com.mcc.automation.author;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema
 public class Author {
 
     private String name;

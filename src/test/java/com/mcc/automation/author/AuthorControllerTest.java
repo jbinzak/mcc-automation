@@ -1,6 +1,5 @@
 package com.mcc.automation.author;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -9,7 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.hamcrest.Matchers.equalTo;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -23,8 +22,14 @@ public class AuthorControllerTest {
 
 	@Test
 	public void getAuthorNameOk() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.get("/author").accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
+		/*
+		MockHttpServletRequestBuilder mockHttpServletRequestBuilder = MockMvcRequestBuilders.get("/author");
+		MockHttpServletRequestBuilder mockHttpServletRequestBuilder2 = mockHttpServletRequestBuilder.accept(MediaType.APPLICATION_JSON);
+		ResultActions resultActions = mvc.perform(mockHttpServletRequestBuilder2);
+		ResultActions resultActions2 = resultActions.andExpect(status().isOk());
+		*/
+
+		mvc.perform(MockMvcRequestBuilders.get("/author").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 	}
 
 	@Test
@@ -37,7 +42,16 @@ public class AuthorControllerTest {
 	public void getAuthorNameData() throws Exception {
 		mvc.perform(MockMvcRequestBuilders.get("/author").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
-				.andExpect(content().string(equalTo("Johnz")));
+				.andExpect(content().contentType("application/json"))
+				.andExpect(jsonPath("$.name").value("John"));
+	}
+
+	@Test
+	public void getAuthorNameParam() throws Exception {
+		mvc.perform(MockMvcRequestBuilders.get("/author?mcc=Joe").accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json"))
+				.andExpect(jsonPath("$.name").value("Joe"));
 	}
 
 }

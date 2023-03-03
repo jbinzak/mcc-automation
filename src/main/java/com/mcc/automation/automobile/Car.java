@@ -1,5 +1,8 @@
 package com.mcc.automation.automobile;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema
 public class Car {
 
     // ex: 123
@@ -7,6 +10,8 @@ public class Car {
 
     // ex: "Mustang"
     private String name;
+
+    public int numberOfDoors;
 
     public Car(String name){
         this.name = name;

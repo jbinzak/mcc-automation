@@ -1,16 +1,24 @@
 package com.mcc.automation.author;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AuthorController {
 
 	@GetMapping("/author")
-	public String getAuthorName() {
-		Author author = new Author("John");
-		return author.getName();
+	public Author getAuthor(@RequestParam(name = "mcc", required = false) String mcc) {
+		Author author = new Author(mcc != null ? mcc : "John");
+		System.out.println(mcc);
+		return author;
+	}
+
+
+	@PostMapping("/author")
+	public Author getAuthor(@Valid @RequestBody Author authorDTO) {
+		Author author = new Author(authorDTO.getName());
+		return author;
 	}
 
 
