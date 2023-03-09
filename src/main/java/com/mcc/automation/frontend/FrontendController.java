@@ -22,4 +22,17 @@ public class FrontendController {
 		return "home";
 	}
 
+	@GetMapping("/dash")
+	public String viewDashPage(@PathVariable(name = "mcc", required = false) String mcc, Model model) {
+
+		Author author = new Author("John");
+
+		// set data for UI
+		model.addAttribute("mcc", mcc);
+		model.addAttribute("author", author);
+
+
+		return "html/index";
+	}
+
 }
