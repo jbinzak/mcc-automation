@@ -36,12 +36,14 @@ public class FrontendControllerFormTest {
 	@Test
 	public void getFormTestIsNotNull() throws Exception {
 
-		HtmlPage page = this.webClient.getPage("http://localhost");
+		// get html from page
+		HtmlPage myPage = this.webClient.getPage("http://localhost");
 
+		// get form
+		HtmlForm myForm = myPage.getHtmlElementById("messageForm");
 
-		HtmlForm form = page.getHtmlElementById("messageForm");
-
-		Assertions.assertThat(form).isNotNull();
+		// test that form is not null aka that is exists
+		Assertions.assertThat(myForm).isNotNull();
 
 	}
 
