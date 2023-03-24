@@ -34,26 +34,8 @@ public class LoginSubmissionTest {
     @Test
     public void login_submission_valid_credentials_valid_navigation_valid_page_title() throws Exception{
 
-        // get the html from a url
-        HtmlPage myHtmlPage = this.webClient.getPage(LoginPageHelper.LOGIN_PAGE_URL);
-
-        // get the input field by ID
-        HtmlEmailInput myHtmlEmailInput = myHtmlPage.getHtmlElementById(LoginPageHelper.LOGIN_PAGE_INPUT_ID_EMAIL);
-
-        // set email
-        myHtmlEmailInput.setValue("john@mcc.com");
-
-        // get the input field by ID
-        HtmlPasswordInput myHtmlPasswordInput = myHtmlPage.getHtmlElementById(LoginPageHelper.LOGIN_PAGE_INPUT_ID_PASSWORD);
-
-        // set password
-        myHtmlPasswordInput.setValue("password123");
-
-        // get the button by ID
-        HtmlButton myHtmlButton = myHtmlPage.getHtmlElementById(LoginPageHelper.LOGIN_PAGE_BUTTON_ID_LOGIN);
-
-        // click button
-        HtmlPage myNextHtmlPage = myHtmlButton.click();
+        // submit
+        HtmlPage myNextHtmlPage = submit_login_form("john@mcc.com", "password123");
 
         // verify page title
         Assert.assertEquals("MCC Library User Profile", myNextHtmlPage.getTitleText());
@@ -63,6 +45,27 @@ public class LoginSubmissionTest {
     @Test
     public void login_submission_invalid_credentials_prompts_error_message() throws Exception{
 
+        // submit
+        HtmlPage myNextHtmlPage = submit_login_form("john@mcc.com", "foobar");
+
+        // get the error message element by ID
+        HtmlElement myHtmlElement = myNextHtmlPage.getHtmlElementById("errMessage");
+
+        // verify error message
+        Assert.assertEquals("Invalid credentials", myHtmlElement.getTextContent());
+    }
+
+
+    /**
+     * 
+     * @param email
+     * @param password
+     * @return
+     * @throws Exception
+     */
+    public HtmlPage submit_login_form(String email, String password) throws Exception{
+
+
         // get the html from a url
         HtmlPage myHtmlPage = this.webClient.getPage(LoginPageHelper.LOGIN_PAGE_URL);
 
@@ -70,13 +73,13 @@ public class LoginSubmissionTest {
         HtmlEmailInput myHtmlEmailInput = myHtmlPage.getHtmlElementById(LoginPageHelper.LOGIN_PAGE_INPUT_ID_EMAIL);
 
         // set email
-        myHtmlEmailInput.setValue("john@mcc.com");
+        myHtmlEmailInput.setValue(email);
 
         // get the input field by ID
         HtmlPasswordInput myHtmlPasswordInput = myHtmlPage.getHtmlElementById(LoginPageHelper.LOGIN_PAGE_INPUT_ID_PASSWORD);
 
         // set password
-        myHtmlPasswordInput.setValue("foobar");
+        myHtmlPasswordInput.setValue(password);
 
         // get the button by ID
         HtmlButton myHtmlButton = myHtmlPage.getHtmlElementById(LoginPageHelper.LOGIN_PAGE_BUTTON_ID_LOGIN);
@@ -84,10 +87,6 @@ public class LoginSubmissionTest {
         // click button
         HtmlPage myNextHtmlPage = myHtmlButton.click();
 
-        // get the error message element by ID
-        HtmlElement myHtmlElement = myNextHtmlPage.getHtmlElementById("errMessage");
-
-        // verify error message
-        Assert.assertEquals("Invalid credentials", myHtmlElement.getTextContent());
+        return myNextHtmlPage;
     }
 }
